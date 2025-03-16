@@ -173,7 +173,9 @@ switch:
       - delay: 300ms
       - switch.turn_off: mute_toggle
     turn_on_action:
+      - delay: ms
     turn_off_action:
+      - delay: ms
   # stateful user facing mic mute switch
   - platform: template
     id: mic_mute_switch
