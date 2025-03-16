@@ -148,6 +148,14 @@ globals:
     type: bool
     restore_value: no
     initial_value: 'false'
+  - id: cutoff_probability_model
+    type: float
+    restore_value: no
+    initial_value: '0.8'
+  - id: cutoff_probability_vad
+    type: float
+    restore_value: no
+    initial_value: '0.05'
 
 switch:
   # Hardware speaker mute
@@ -169,13 +177,10 @@ switch:
   #    number: GPIO4 # D3
   #    inverted: true
     id: mute_toggle
+    optimistic: true
     on_turn_on:
       - delay: 300ms
-      - switch.turn_off: mute_toggle
-    turn_on_action:
-      - delay: 1ms
-    turn_off_action:
-      - delay: 1ms
+      - switch.turn_off: mute_toggle  
   # stateful user facing mic mute switch
   - platform: template
     id: mic_mute_switch
@@ -1139,7 +1144,7 @@ micro_wake_word:
   id: mww
   models:
     - model: https://github.com/kahrendt/microWakeWord/releases/download/okay_nabu_20241226.3/okay_nabu.json
-      # probability_cutoff: 0.8
+      probability_cutoff: cutoff_probability_model
       id: okay_nabu
     - model: hey_jarvis
       id: hey_jarvis
@@ -1149,7 +1154,7 @@ micro_wake_word:
       id: stop
       internal: true
   vad:
-    probability_cutoff: 0.05
+    probability_cutoff: cutoff_probability_vad
   microphone: nabu_mic_mww
   on_wake_word_detected:
     # If the wake word is detected when the device is muted (Possible with the software mute switch): Do nothing
@@ -1326,3 +1331,30 @@ button:
             id(request_response) = true;
 debug:
   update_interval: 5s
+
+number:
+  - platform: template
+    name: "Cutoff Probability Model"
+    id: cutoff_probability_model
+    min_value: 0.0
+    max_value: 1.0
+    step: 0.01
+    initial_value: 0.5
+    unit_of_measurement: "%"
+    icon: "mdi:percent"
+    set_action:
+      - lambda: |-
+          id(cutoff_probability_model) = x;  // Replace 'your_variable' with the actual variable you're updating
+
+  - platform: template
+    name: "Cutoff Probability VAD"
+    id: cutoff_probability_vad
+    min_value: 0.0
+    max_value: 1.0
+    step: 0.01
+    initial_value: 0.05
+    unit_of_measurement: "%"
+    icon: "mdi:percent"
+    set_action:
+      - lambda: |-
+          id(cutoff_probability_vad) = x;  // Replace 'your_variable' with the actual variable you're updating
