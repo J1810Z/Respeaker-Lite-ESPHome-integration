@@ -106,10 +106,6 @@ api:
 # http_request:
 #   verify_ssl: false
 
-ota:
-  - platform: esphome
-    id: ota_esphome
-
 i2c:
   - id: internal_i2c
     sda: GPIO5
