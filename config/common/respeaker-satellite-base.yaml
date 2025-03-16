@@ -93,6 +93,10 @@ api:
     - action: stop_va
       then:
         - voice_assistant.stop
+    - action: request_response
+      then:
+        - lambda: |-
+            id(request_response) = true;
   on_client_connected:
     - script.execute: control_leds
   on_client_disconnected:
@@ -118,6 +122,10 @@ psram:
   speed: 80MHz
 
 globals:
+  - id: request_response
+    type: bool
+    restore_value: no
+    initial_value: 'false'
   - id: init_in_progress
     type: bool
     restore_value: no
@@ -588,6 +596,11 @@ sensor:
     device_class: duration
     unit_of_measurement: s
     icon: "mdi:timer"
+  - platform: template
+    name: "Request Response State"
+    id: request_response_sensor
+    lambda: 'return id(request_response) ? 1.0 : 0.0;'  # Display 1.0 if true, 0.0 if false
+    update_interval: 10s
 
 text_sensor:
   - platform: template
@@ -599,6 +612,9 @@ text_sensor:
     id: tts_uri
     name: "TTS URI"
     disabled_by_default: true
+  - platform: template
+    id: text_response
+    name: "Response of Assist"
 
 event:
   # Event entity exposed to the user to automate on complex center button presses.
@@ -630,8 +646,6 @@ script:
             id(control_leds_init_state).execute();
           } else if (!id(wifi_id).is_connected() || !id(api_id).is_connected()){
             id(control_leds_no_ha_connection_state).execute();
-          } else if (id(user_button).state) {
-            id(control_leds_center_button_touched).execute();
           } else if (id(timer_ringing).state) {
             id(control_leds_timer_ringing).execute();
           } else if (id(voice_assistant_phase) == ${voice_assist_waiting_for_command_phase_id}) {
@@ -1256,6 +1270,13 @@ voice_assistant:
     # Reset the voice assistant phase id and reset the LED animations.
     - lambda: id(voice_assistant_phase) = ${voice_assist_idle_phase_id};
     - script.execute: control_leds
+    - if:
+        condition:
+          lambda: return id(request_response);  # Check if the variable is true
+        then:
+          - lambda: |-
+              id(request_response) = false;  
+          - voice_assistant.start:
   on_timer_finished:
     - switch.turn_on: timer_ringing
     - lambda: |
@@ -1296,6 +1317,12 @@ button:
     entity_category: config
     disabled_by_default: true
     icon: "mdi:restart"
-
+  - platform: template
+    name: "Set Request Response"
+    id: set_request_response_button
+    on_press:
+      then:
+        - lambda: |-
+            id(request_response) = true;
 debug:
   update_interval: 5s
