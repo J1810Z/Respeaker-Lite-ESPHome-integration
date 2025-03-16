@@ -163,14 +163,15 @@ switch:
       - lambda: id(respeaker).unmute_speaker();
   # stateless momentary mic mute switch
   #- platform: gpio
+  - platform: template
   #  internal: true
   #  pin: 
   #    number: GPIO4 # D3
   #    inverted: true
-  #  id: mute_toggle
-  #  on_turn_on:
-  #    - delay: 300ms
-  #    - switch.turn_off: mute_toggle
+    id: mute_toggle
+    on_turn_on:
+      - delay: 300ms
+      - switch.turn_off: mute_toggle
   # stateful user facing mic mute switch
   - platform: template
     id: mic_mute_switch
