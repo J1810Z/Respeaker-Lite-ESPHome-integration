@@ -695,9 +695,13 @@ text_sensor:
     icon: "mdi:timer"
     disabled_by_default: true
   - platform: template
-    id: tts_uri
-    name: "TTS URI"
-    disabled_by_default: true
+    name: "Alarm time"
+    id: alarm_time
+    icon: mdi:bell-ring
+  - platform: template
+    name: "Current device time"
+    id: current_time
+    icon: mdi:clock
 
 event:
   # Event entity exposed to the user to automate on complex center button presses.
