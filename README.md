@@ -24,36 +24,22 @@ __* Thanks to Mike aka @mikey60 and his fork to nabu_microphone, this project is
 5. Flash ESPHome firmware (YAML included, place `/config/common/respeaker-satellite-base.yaml` into ESPHome `common` directory, and adjust `/config/respeaker-satellite-dashboard-example.yaml` to your needs) to ESP32 (use its port).
 6. Add device to Home Assistant.
 
-## Current state
-- voice communication: works
-- playing media: works (with exception of files, containing album art, playing from HA media picker - this is getting addressed by ESPHome guys (i can't thank them enough!!!)
-- media ducking while voice communication ongoing: works
-- interactions with HA timers: works
-- LED: works (also can be exposed as light in HA)
-- mute: hardware button works, software button works
-- action button: works, multifunctional, based on PE logic
-- default HA wizard for satellites: works
-- drop-down with wake word selection: works
-- added switches to turn off button sounds, mute/unmute sounds
-- added sensors for next device timer properties (time is updated once per 5 sec, name is available if set)
+### Here are also some [useful blueprints to use with your satellite](readme/blueprints)
+
+## Current abilities
+The device has feature parity with Voice PE. Pretty much everything works same way, except volume control (solved in [Koala Satellite](https://github.com/formatBCE/Koala-Satellite)).
+There are some additional things i've added for convenience:
+- switches to turn off button sounds, mute/unmute sounds;
+- sensors for next device timer properties (time is updated once per 5 sec, name is available if set);
+- TTS URI event `esphome.tts_uri`, sent to Home Assistant every time there's voice response (check out example automation to redirect response to other media player [here](readme/tts_uri.md));
+- STT text event `esphome.stt_text`, sent every time there's text of response available (you may use it to display readable response on your dashboard, for example);
+- daily alarm functionality, read more on it [here](readme/alarms.md).
 
 ## DFU software auto-update
 Since version 2025.2.2, the firmware includes corresponding DFU firmware for Respeaker Lite board. On first start after update, new firmware will be installed to Respeaker automatically. You will see Respeaker LED flashing yellow, while installing, and green on successful install. So now there's no need to update DFU firmware. Woohoo!
 
-## ToDo
-- DONE ~~software mute switch. Software triggering works, but state read doesn't work so far (needs custom ESPHome component for reading mute status with i2c). Check [Arduino example here](https://github.com/respeaker/ReSpeaker_Lite/blob/master/xiao_esp32s3_examples/xiao_i2c_get_register_value/xiao_i2c_get_register_value.ino#L55) if you want to help~~
-- DONE ~~OTA software update for Respeaker board. Can snug this functionality from PE project. Will be part of [Koala](https://github.com/formatBCE/Koala-Satellite)~~
-- DONE ~~48kHz bitrate. Right now the board works on 16kHz, but Seeed already preoared 48kHz firmware. Great guys!~~
-  ~~It doesn't work yet with ESPHome though, since we need to add resampler for the microphone to downsample it to 16kHz (currently there's no way to use 48kHz for mic). Speaker works though.~~
-- hardware volume controls. Solved in [Koala](https://github.com/formatBCE/Koala-Satellite) ~~Would be nice to have, but there's no pins left on ESP32... Thinking...~~ ~~I made some cradle with buttons and resistors to have 3 buttons on single pin - but it's bulky and inconvenient to solder, as well as to use in ESPHome. I decided to skip on it.~~
-- bigger LED strip. Solved in [Koala](https://github.com/formatBCE/Koala-Satellite) ~~The problem is same as for hardware volume... But if you want, you can solder strip/ring to the GPIO1 instead of inbuilt LED. I decided that i'm good with one on board so far.~~
-
 ### Casing
 I made some casing to improve family approval factor. [Check it out.](casing/Casing.md)
-
-### Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=formatBCE/Koala-Satellite,formatBCE/Respeaker-Lite-ESPHome-integration&type=Date)](https://www.star-history.com/#formatBCE/Koala-Satellite&formatBCE/Respeaker-Lite-ESPHome-integration&Date)
 
 
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/formatbce)
