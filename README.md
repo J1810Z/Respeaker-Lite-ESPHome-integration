@@ -9,11 +9,11 @@ It's using [official code for Voice Preview Edition by ESPHome team](https://git
 
 ## *Disclaimer
 ### Use this on your own risk. Expect breaking changes.
-Although Voice PE is released, parts of its code are still under development and merging to ESPHome core repository with breaking changes. I will try to update YAML and XMOS board firmware as soon as i can, but it can't be instantenuous...
+Although Voice PE is released, parts of its code are still under active development. I will try to update YAML and XMOS board firmware as soon as i can, but it can't be instantenuous...
 If you encounter a problem, before creating ticket here you may go to PE and Seeed repos, linked above, and see if something changed there. I'll gladly accept pull-requests. :)
 
 ## Why?
-I completely abandoned proprietary assistants in the summer of 2024 and fully committed to Assist all-hands.
+I completely abandoned proprietary assistants in the Summer of 2024 and fully committed to Assist all-hands.
 With this board i finally can build device, that will satisfy me and (more important) my family as their trusted voice assistant.
 
 ## What to do with it?
@@ -24,7 +24,7 @@ __* Thanks to Mike aka @mikey60 and his fork to nabu_microphone, this project is
 5. Flash ESPHome firmware (YAML included, place `/config/common/respeaker-satellite-base.yaml` into ESPHome `common` directory, and adjust `/config/respeaker-satellite-dashboard-example.yaml` to your needs) to ESP32 (use its port).
 6. Add device to Home Assistant.
 
-### Here are also some [useful blueprints to use with your satellite](readme/blueprints)
+### Here are also some [useful blueprints to use with your satellite](readme/blueprints.md)
 
 ## Current abilities
 The device has feature parity with Voice PE. Pretty much everything works same way, except volume control (solved in [Koala Satellite](https://github.com/formatBCE/Koala-Satellite)).
